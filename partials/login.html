@@ -1,0 +1,51 @@
+   <style>
+    .signin-form{ width:480px; height: 500px; margin: 100px 0 0 50px; padding: 20px; color: #FFF;}
+    .signin-field .signin{ margin-top: 20px; height: 50px;}
+    .signin-field .signin span{ display: inline-block; float: left;}
+    .signin-field .signin input{ height: 50px; width: 380px; background: #F4F4F4; border: 0 none;}
+    .signin-field .signin input:focus{ background: #FFF;}
+    .signin-field .signin span.batch{ width: 50px; height: 50px; line-height: 50px; text-align: center; background: #F4F4F4; color: #666; }
+    .login-panel{ background: url('/images/iphone-518101_1280.jpg'); background-size: cover;}
+    .signin-btn{ height: 40px; width: 100px; font-size: 1.2em;}
+    .footer{ text-align: center; color: #ccc;}
+    .footer a{ text-decoration: none; color: #ccc;}
+    .footer a:hover{ color: #FFF;}
+   </style> 
+    <div class="content-wrapper fixheight login-panel"  perfix="0"  ng-style="style()"  resize>
+        <div class="pure-g intro">
+            <div class="pure-u-1-1">
+                <form class="pure-form" ng-submit="loginDo()">
+                    <div class="signin-form">
+                        <fieldset class="signin-field">
+                        <div><h1>流量魔方控制中心</h1></div>
+                            <div class="signin">
+                                <span class="icon batch">&#xf170;</span>
+                                <span>
+                                        <input id="login-username" type="text" placeholder="用户名" title="用户名"  autocomplete="off" ng-model="username"  pattern='.*' required>
+                                    </span>
+
+                            </div>
+                            <div class="signin">
+                                <span class="icon batch">&#xf0C0;</span>
+                                <span>
+                                        <input id="login-pass" type="password"  maxLength="20" placeholder="密码" title="密码" ng-model="password"  pattern='.{6,}' required>
+                                    </span>
+
+                            </div>
+                            <div class="signin"><button type="submit" class="pure-button pure-button-primary signin-btn">登录</button></div>
+                        </fieldset>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="pure-g">
+            <div class="pure-u-1-1 footer">
+                <p>流量魔方.INC &copy; 2015</p>
+            </div>
+        </div>
+
+    </div>
+
+<notify show="notifyShow" icon="notifyIcon">
+        {{notifyContent}}
+</notify>

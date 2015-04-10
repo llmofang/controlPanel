@@ -1,0 +1,102 @@
+<style>
+    .bg1{ background: #60CD9B}
+    .bg2{ background: #66B5D7}
+    .bg3{ background: #EEC95A}
+    .bg4{ background: #E87352}    
+    .ov-panel-1-2{padding: 0 2px 0 4px;}
+    .ov-panel-2-2{padding: 0 4px 0 2px;}    
+    .ov-panel-1-4{padding: 0 20px 0 4px; }
+    .ov-panel-2-4{padding: 0 12px 0 12px; }
+    .ov-panel-3-4{padding: 0 12px 0 12px; }
+    .ov-panel-4-4{padding: 0 4px 0 20px; }
+    .ov-panel-main{}
+    
+    .ov-summary{ padding: 20px;}
+    .ov-summary-icon{float: left; width: 100px; height: 100px; line-height: 100px; color: #FFF; text-align: center;}
+    .ov-summary-icon .batch{font-size: 40px; line-height: 100px; }
+    .ov-summary-info{ float: left; padding-left: 20px;}
+    .ov-summary-info p{ color: #666;}
+    .ov-summary-info p.ov-summary-num{font-size: 25px; font-weight: bold; margin: 10px;}
+    .ov-summary-info p.ov-summary-title{font-size: 14px; margin: 20px 10px;}
+    .blank{ height: 4px;}
+    .chart1{ width: 100%; height: 180px;} 
+</style>
+<link rel="stylesheet" href="/dist/nvd3/build/nv.d3.min.css">
+<div class="main-frame"  ng-controller="OverviewCtrl">
+    <div class="pure-g">
+        <div class="pure-u-1-2 ov-panel-1-2">
+            <div class="ov-panel-main block height-400">
+                <h5>用户</h5>
+                <nvd3 class="chart1" options='chart.optionsOfChart1' data='chart.dataOfChart1'></nvd3>
+            </div>
+            
+    
+        </div>
+        <div class="pure-u-1-2 ov-panel-2-2">
+            <div class="ov-panel-main block height-400">
+                <h5>流量</h5>
+                <nvd3 class="chart2" options='chart.optionsOfChart2' data='chart.dataOfChart2'></nvd3>
+            </div>
+        </div>        
+    </div>
+    <div class="pure-g blank">
+        <div class="pure-u-1-1"></div>
+    </div>
+    <div class="pure-g blank2">
+        <div class="pure-u-1-1"></div>
+    </div> 
+    <div class="pure-g">
+        <div class="pure-u-1-4 ov-panel-1-4">
+            <div class="ov-panel-main block height-140">
+                <div class="ov-summary">
+                    <div class="ov-summary-icon bg1">
+                        <span class="batch">&#xF105;</span>
+                    </div>
+                    <div  class="ov-summary-info">
+                        <p class="ov-summary-num">￥{{overview.finance.balance}}</p>
+                        <p class="ov-summary-title">账户余额</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pure-u-1-4 ov-panel-2-4">
+            <div class="ov-panel-main block height-140">
+                <div class="ov-summary">
+                    <div class="ov-summary-icon bg2">
+                        <span class="batch">&#xF065;</span>
+                    </div>
+                    <div  class="ov-summary-info">
+                        <p class="ov-summary-num">{{overview.count.app}}</p>
+                        <p class="ov-summary-title">应用数量</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pure-u-1-4 ov-panel-3-4">
+            <div class="ov-panel-main block height-140">
+                <div class="ov-summary">
+                    <div class="ov-summary-icon bg3">
+                        <span class="batch">&#xF045;</span>
+                    </div>
+                    <div  class="ov-summary-info">
+                        <p class="ov-summary-num">{{overview.count.user}}</p>
+                        <p class="ov-summary-title">用户数量</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="pure-u-1-4 ov-panel-4-4">
+            <div class="ov-panel-main block height-140">
+                <div class="ov-summary">
+                    <div class="ov-summary-icon bg4">
+                        <span class="batch">&#xF152;</span>
+                    </div>
+                    <div  class="ov-summary-info">
+                        <p class="ov-summary-num">0</p>
+                        <p class="ov-summary-title">未读消息</p>
+                    </div>
+                </div>
+            </div>
+        </div>          
+    </div>    
+</div>

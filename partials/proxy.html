@@ -1,0 +1,103 @@
+<div class="full-height">
+    <div class="content pure-g" ng-class="narrow==0?'layout':'layout-narrow '">
+        <div class="pure-u" ng-class="narrow==0?'nav':'nav-narrow'" ng-mouseenter="narrow=0" ng-mouseleave="narrow=1">
+            <div class="nav-inner">
+                <div class="pure-logo">
+                    <span class="batch">&#xF0DE;</span>
+                    <span class="logo-main">流量魔方</span><span class="logo-sub">({{version}})</span>
+                </div>
+
+
+                <div class="pure-menu pure-menu-open">
+                    <ul>
+                        <li>
+                            <a href="/#/overview" ng-class="'overview'==currentCtrl?'active':''">
+                                <span class="batch">&#xF09B;</span>
+                                <span class="menu-txt">概览</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/#/report"  ng-class="'report'==currentCtrl?'active':''">
+                                <span class="batch">&#xF030;</span>
+                                <span class="menu-txt">报表</span>
+                            </a>
+                        </li> 
+                        <li>
+                            <a href="/#/configation"  ng-class="'configation'==currentCtrl?'active':''">
+                                <span class="batch">&#xF04D;</span>
+                                <span class="menu-txt">设置</span>
+                            </a>
+                        </li>     
+                        <li>
+                            <a href="/#/app"  ng-class="'app'==currentCtrl?'active':''">
+                                <span class="batch">&#xF065;</span>
+                                <span class="menu-txt">应用</span>
+                            </a>
+                        </li> 
+                        <!--
+                        <li>
+                            <a href="/#/bill"  ng-class="'bill'==currentCtrl?'active':''">
+                                <span class="batch">&#xF0D6;</span>
+                                <span class="menu-txt">帐单</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/#/message"  ng-class="'message'==currentCtrl?'active':''">
+                                <span class="batch">&#xF009;</span>
+                                <span class="menu-txt">消息</span>
+                            </a>
+                        </li> 
+                        -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel pure-u-1">
+            <div class="top-menu pure-g-1">
+                <div class="user-account pull-left">
+                    <span>当前账号：<b>{{username}}</b> </span>
+                </div>
+                <div class="user-account pull-left">
+                    <span>未读提醒:</span>
+                    <span  ng-show="0===newmsgnum"> 0 </span>
+                    <span ng-show="0!==newmsgnum"><a  class="new-order-num"  href="/#/msg">{{newmsgnum}} </a></span>
+                </div>                
+                <div class="top-menu-main pull-right">
+                    <ul>
+                        <li>
+                            <a href="#"> <span class="batch">&#xF0DA;</span><span>帮助</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"> <span class="batch">&#xF147;</span><span>关于</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" ng-disabled="logouting" ng-click="logoutDo()"> 
+                            <span class="batch" style="color:#D06578">&#xF069;</span>
+                                    <span ng-show="!logouting" class="logouttxt">退出</span><span ng-show="logouting" class="logouttxt">退出中</span>
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="full-height main-bg" ng-include src="templateUrl">
+            </div>
+        </div>
+    </div>
+    <notify show="notifyShow" icon="notifyIcon">
+            {{notifyContent}}
+    </notify>
+    <confirm show="confirmShow" icon="confirmIcon" confirmfn="notifyConfirm">
+            {{confirmContent}}
+    </confirm>
+</div>
+
+
+
+
+
+
+
+

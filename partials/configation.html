@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="/dist/switchery/switchery.min.css" />
+<div class="main-frame" ng-controller="ConfiguartionCtrl">
+	<div class="pure-g fix-pos">
+		<div class="pure-u-1-1">
+			<div class="pure-menu pure-menu-open pure-menu-horizontal">
+				<ul>
+					<li  ng-class="tabIndex == 1?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="tabIndex=1">基本信息</a>
+					</li>
+					<li  ng-class="tabIndex == 2?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="tabIndex=2">消息通知</a>
+					</li>					
+					<li  ng-class="tabIndex == 3?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="tabIndex=3">修改密码</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="fix-height-1"></div>
+		<div class="pure-u-1-2" ng-show="tabIndex == 1 || !tabIndex">
+			<form class="pure-form pure-form-stacked" ng-submit="SaveBasic()">
+				<fieldset>
+					<legend>设置基本信息</legend>
+					<label for="name">开发者姓名</label>
+					<input id="name"  type="text" placeholder="开发者姓名"　 class="pure-input-1" ng-model="Edit.basic.name" required>
+					<label for="phone">电话或手机号</label>
+					<input id="phone"  type="text" placeholder="电话或手机号"　 class="pure-input-1" ng-model="Edit.basic.phone" required>
+ 					<label for="company">公司名称</label>
+					<input id="company"  type="text" placeholder="公司名称"　 class="pure-input-1" ng-model="Edit.basic.company" required> 
+ 					<label for="address">公司地址</label>
+					<input id="address"  type="text" placeholder="公司地址"　 class="pure-input-1" ng-model="Edit.basic.address" required>      
+  					<label for="title">发票抬头</label>
+					<input id="title"  type="text" placeholder="发票抬头"　 class="pure-input-1" ng-model="Edit.basic.title" required>
+  					<label for="website">网站</label>
+					<input id="website"  type="text" placeholder="网站"　 class="pure-input-1" ng-model="Edit.basic.website" required>                    
+					<div class="clearfix"></div>
+					<button type="submit" ng-disabled="basicSubmiting" class="pure-button pure-button-primary">
+						{{basicSubmiting?'提交中':'提交'}}
+					</button>
+
+				</fieldset>
+			</form>
+		</div>      
+		<div class="pure-u-1-2" ng-show="tabIndex == 2">
+			<form class="pure-form pure-form-stacked" ng-submit="SaveNotify()">
+				<fieldset>
+					<legend>设置消息提醒</legend>
+						<label for="enablesms">账户余额不足时短信提醒我</label>
+						<input id="enablesms" type="checkbox" ng-model="Edit.notification.enablephonenotify" class="js-switch" ui-switch/>         
+						<div class="clearfix"></div>
+						<label for="sms">接收提醒手机号</label>
+						<input ng-show="Edit.notification.enablephonenotify" id="sms" type="text" placeholder="手机号"　 class="pure-input-1" ng-model="Edit.notification.notify_phone">                    
+						<div class="clearfix"></div>
+						<label for="enableemail">重要消息邮件提醒我</label> 
+						<input id="enableemail" type="checkbox" ng-model="Edit.notification.enableemailnotify" class="js-switch" ui-switch/>       						         
+						<div class="clearfix"></div>
+						<label for="email">接收邮件地址</label>
+						<input id="email" ng-show="Edit.notification.enableemailnotify" type="text"  placeholder="邮件地址"　 class="pure-input-1" ng-model="Edit.notification.notify_email"  />               
+						<div class="clearfix"></div>
+						<button type="submit"  ng-disabled="notifySubmiting"     class="pure-button pure-button-primary" >
+							{{notifySubmiting?'提交中':'提交'}}</button>             
+						</button>           
+				</fieldset> 
+			</form>    
+		</div> 
+		<div class="pure-u-1-2" ng-show="tabIndex == 3">
+			<form class="pure-form pure-form-stacked" ng-submit="SavePasswd()">
+				<fieldset>
+					<legend>修改登录密码</legend>
+						<label for="old-password">旧密码</label>
+						<input id="old-password" type="password" placeholder="输入旧密码"　 class="pure-input-1" ng-model="Edit.passwd.old" pattern='.{6,}' required>                       
+						<label for="new-password">新密码</label>
+						<input id="new-password" type="password" placeholder="输入新密码"　 class="pure-input-1" ng-model="Edit.passwd.new" pattern='.{6,}' required>
+						<label for="re-new-password">重复新密码</label>
+						<input id="re-new-password" type="password" placeholder="重复新密码"　 class="pure-input-1" ng-model="Edit.passwd.renew" pattern='.{6,}' required>   
+						<div class="clearfix"></div>
+						<button type="submit"  ng-disabled="passwdSubmiting"     class="pure-button pure-button-primary" >
+							{{passwdSubmiting?'提交中':'提交'}}</button>             
+						</button>                                      
+				</fieldset> 
+			</form>    
+		</div> 
+	</div>
+</div>        

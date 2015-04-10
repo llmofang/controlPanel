@@ -1,0 +1,32 @@
+{
+  "name": "llmofang",
+  "version": "0.0.1",
+  "dependencies": {
+    "requirejs": "~2.1.9",
+    "angular": "~1.2.10",
+    "jquery": "~2.0.0",
+    "d3": "~3.3.13",
+    "nvd3": "~v1.7",  
+    "moment": "~2.9.0",  
+    "angular-animate": "~1.2.10",
+    "angular-resource": "~1.2.10",
+    "angular-route": "~1.2.10",
+    "angular-zeroclipboard":"~0.4.1",
+    "angular-nvd3":"~1.0.0-beta",
+    "angular-datepicker":"~1.0.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dist",
+    "test",
+    "tests",
+    "dist/"
+  ],
+  "authors": [
+    "wengcan <572037922@qq.com>"
+  ],
+  "private": true
+}

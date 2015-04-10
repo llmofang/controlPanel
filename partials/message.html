@@ -1,0 +1,67 @@
+<style>
+ul.message-list{margin: 0; padding: 0;}	
+ul.message-list li{list-style: none; width: 100%; padding-left: 150px; margin-top: 10px;}
+.message-avator{ width: 100px;  margin-left: -150px; float: left;}
+.message-main{ width: 95%; float: left;padding: 10px; border: 1px solid #ccc; border-radius: 8px;}
+.message-main:before{
+	content: "■";
+	width: 15px;
+	height: 15px;
+	font-size: 5px;
+	float: left;
+	margin-left: -18px;
+	margin-top: 30px;
+	border-left: 1px solid#ccc;
+	border-bottom: 1px solid#ccc;	
+	color:#FFF;
+	background: #FFF;
+	-moz-transform: rotate(45deg); /* FF3.5+ */
+	-o-transform: rotate(45deg); /* Opera 10.5 */
+	-webkit-transform: rotate(45deg); /* Saf3.1+, Chrome */	
+}
+.avator-main{ width:100px; height: 100px; border-radius: 50px; overflow: hidden; }
+.avator-main img{ width: 100px;}
+.message-paginator{ text-align: right; padding-right: 5%;}
+</style>
+
+<div class="main-frame" ng-controller="ShopCtrl">
+    <div class="pure-g">
+        <div class="pure-u-1-1">
+	        <ul class="message-list">
+	       		<li>
+	       			<div class="message-avator">
+	       				<div class="avator-main">
+	       					<img src="/images/sysavator.png">
+	       				</div>
+	       			</div>
+	       			<div class="message-main">
+		       			<h5>关于流量魔方后台管理系统使用说明：</h5>
+		       			<p>亲爱的用户，本系统正在不断调优过程中，使用中有任何问题都可以咨询我们的客服．</p>
+	       			</div>
+	       			<div class="clearfix"></div>
+	       		</li>
+	       			       			       			       		
+	        </ul>
+            <div class="fix-height-1"></div>
+            <!--
+            <ul class="pure-paginator message-paginator">
+                <li><a class="pure-button prev" href="#">&#171;</a>
+                </li>
+                <li><a class="pure-button" href="#">1</a>
+                </li>
+                <li><a class="pure-button pure-button-active" href="#">2</a>
+                </li>
+                <li><a class="pure-button" href="#">3</a>
+                </li>
+                <li><a class="pure-button" href="#">4</a>
+                </li>
+                <li><a class="pure-button" href="#">5</a>
+                </li>
+                <li><a class="pure-button next" href="#">&#187;</a>
+                </li>
+            </ul>
+-->
+            <div class="fix-height-1"></div>	        
+        </div>
+    </div>
+</div>        

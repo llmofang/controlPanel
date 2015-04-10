@@ -1,0 +1,19 @@
+<style>
+	.feedback-main{ width: 95%;}
+	#feedback{ height:200px; resize:none;}	
+</style>
+<div class="main-frame" ng-controller="ShopCtrl">
+    <div class="pure-g feedback-main">
+        <div class="pure-u-1-1">
+            <form class="pure-form pure-form-stacked">
+                <fieldset>
+                    <legend>反馈信息</legend>
+                        <!--label for="feedback">直接提交您的问题:</label-->
+                        <textarea id="feedback" class="pure-input-1"  placeholder="请填写您在使用中遇到的问题或给我们提意见" ng-model="Edit.goods.intro"></textarea>                         
+                        <div class="clearfix"></div>
+                        <button type="submit" class="pure-button pure-button-primary">提交</button>                                      
+                </fieldset> 
+            </form>    
+        </div>
+    </div>
+</div>        

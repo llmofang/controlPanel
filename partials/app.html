@@ -1,0 +1,291 @@
+<style>
+	ul.app-list {
+		margin: 0;
+		padding: 0;
+	}
+	ul.app-list li {
+		list-style: none;
+		float: left;
+		margin-right: 5px;
+		margin-top: 5px;
+        width: 520px;
+		height: 80px;
+        padding: 10px 10px 10px 80px;
+		border: 1px solid #ccc;
+	}
+    ul.app-list li .app-icon{
+        width: 60px; 
+        height: 60px; 
+        border-radius: 8px;
+        overflow: hidden;
+        margin-left: -70px;
+        float: left;
+    }
+    ul.app-list li .app-icon.noicon{
+        border:1px solid #CCC;
+    }    
+    ul.app-list li .app-icon img{
+        width: 60px; height: 60px;
+    }
+    
+    ul.app-list li .app-info{
+        float: left;
+    }
+    ul.app-list li .app-info p{
+        margin: 0;
+        padding: 0;
+    }
+    ul.app-list li .app-info  a{
+        color: #666;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+    ul.app-list li .app-info  a:hover{
+         color: #999; 
+    }
+	ul.app-list li p{
+
+	}
+	ul.app-list li p.app-title{
+        font-size: 18px;
+        font-weight: bold;
+
+	}
+	ul.app-list li p.app-operation{
+
+	}      
+	ul.app-list li ａ {
+		text-decoration: none;
+	}
+	.add-goods-area {} #goodsIntro {
+		height: 160px;
+		resize: none;
+	}
+	.pure-table tr th{
+		vertical-align:  top;
+	}
+	.pure-table{ margin-top: 5px; margin-right: 5px;}	
+	.pure-table tr th,.pure-table tr td{
+		text-align: center;
+	}
+	.pure-paginator .prev, .pure-paginator .next{ color: #666; text-shadow:0 0;}
+	.pure-paginator  .prev.disabled,.pure-paginator .next.disabled{ background: #EEE; color: #DDD; cursor:default;}
+	.pure-paginator .pure-button:focus { box-shadow: none;}
+	.tips{ border-left: 6px solid red; padding-left: 5px;}
+	.batch.status_in{ color: #00BF9D}
+	.batch.status_out{ color: #EEE}
+    .fix-height-1{ height: 16px;}
+    div.app-add{ padding: 5px 0; border: 1px solid #CCC;}
+    div.app-add  .app-add-step{ padding: 2px 10px;}
+    div.app-add  .app-add-step.active{ background: #999; color: #FFF;}
+    form.add-step-form label{ width: 100%; display: block;}
+    
+</style>
+<link rel="stylesheet" href="/dist/switchery/switchery.min.css" />
+<div class="main-frame"   ng-controller="AppCtrl">
+	<div class="pure-g">
+		<div class="pure-u-1-1">
+			<div class="pure-menu pure-menu-open pure-menu-horizontal">
+				<ul>
+					<li ng-class="Editing.tabIndex == 1?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="Editing.tabIndex=1">所有应用</a>
+					</li>
+					<li ng-class="Editing.tabIndex == 2?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="Editing.tabIndex=2">应用设置</a>
+					</li>
+					<li ng-class="Editing.tabIndex == 3?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="Editing.tabIndex=3">应用ＫＥＹ</a>
+					</li>                    
+					<li ng-class="Editing.tabIndex == 4?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="Editing.tabIndex=4">流量配置</a>
+					</li> 
+					<li ng-class="Editing.tabIndex == 5?'pure-menu-selected':''">
+						<a href="javascript:;" ng-click="Editing.tabIndex=5">白名单配置</a>
+					</li>                     
+				</ul>
+			</div>
+		</div>
+		<div class="fix-height-1"></div>
+		<div class="pure-u-1-1" ng-show="Editing.tabIndex == 1 || !Editing.tabIndex">
+			<ul class="app-list">
+
+				<li ng-repeat="item in apps">
+                    <div>
+                        <div ng-class="item.icon === null || item.icon === ''?'app-icon noicon':'app-icon'">
+                        <img ng-src="{{item.icon ===  null  || item.icon === '' ?noicon:item.icon}}"/>
+                        </div>
+                        <div class="app-info">
+                            <p class="app-title">{{item.name}}</p>
+                            <p>
+                                <div class="fix-height-1"></div>
+                            </p>
+                            <p>
+                                <a href="javascript:;" ng-click="configApp(item.id)">
+                                    <span class="app-config batch">&#xf13D;</span>
+                                    <span>应用设置</span>
+                                </a>
+                                <a href="javascript:;" ng-click="downloadSdk(item.id)">
+                                    <span class="app-download batch">&#xf0C1;</span>
+                                    <span>应用ＫＥＹ</span>
+                                </a> 
+                                <a href="javascript:;" ng-click="configFlow(item.id)">
+                                    <span class="app-config batch">&#xf142;</span>
+                                    <span>流量配置</span>
+                                </a> 
+                                <!--a href="javascript:;" ng-click="configWhitelist(item.id)">
+                                    <span class="app-config batch">&#xf034;</span>
+                                    <span>白名单配置</span>
+                                </a-->
+                                <a href="javascript:;" ng-click="removeApp(item.id,item.name)">
+                                    <span class="app-remove batch">&#xf056;</span>
+                                    <span>删除</span>
+                                </a>                                  
+                            </p>                        
+                        </div>
+                    </div>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+			<form class="pure-form" ng-submit="addNewApp()">
+				<fieldset>
+					<legend>添加一个新的应用</legend>
+					<input type="text" placeholder="输入应用名称" ng-model="Edit.add.name"  pattern='.+' required>
+					<button type="submit" class="pure-button pure-button-primary"   ng-disabled="Edit.add.submiting"  >{{Edit.add.submiting?'提交中':'提交'}}</button>
+				</fieldset>
+			</form>
+		</div>
+
+ 		<div class="pure-u-1-2" ng-show="Editing.tabIndex == 2"> 
+            <form class="pure-form add-step-form" ng-submit="modifyApp()">
+				<fieldset>
+					<legend>修改应用信息</legend>
+					<div class="pure-g add-step-area">
+						<div class="pure-u-1-1">
+							<label for="appId1">选择应用</label>
+							<select id="appId1" ng-model="Editing.appid" ng-options="m.id as m.name for m in apps" class="pure-input-1" required>
+								<option value="">请选择应用</option>
+							</select>							
+							<label for="appName">应用名称</label>
+							<input id="appName" class="pure-input-1" type="text" placeholder="输入应用名称" ng-model="Edit.app.name"  pattern='.*'  required>
+							<label for="appIntro">应用介绍</label>
+							<textarea id="appIntro" class="pure-input-1" placeholder="输入应用介绍（２００字以内）" ng-model="Edit.app.intro"></textarea>
+				            <label>应用图标</label>
+							<div class="appicon">
+                                <div class="iconpreview"><img ng-class="Edit.app.icon === null?'none':''" ng-src="{{Edit.app.icon === null || Edit.app.icon === ''? noicon:Edit.app.icon}}"/></div>
+                                <div class="iconupload">
+                                    <label class="fileContainer" ng-class="file_upload_progress_appImg ==true?'upload-disabled':'' " ng-init="file_upload_progress_appImg = false">
+                                        点此上传应用图标
+                                        <input type="file" fileuploader="upload" filelength="1000000" filetypeallow="['jpg','png','gif']" fileres="'Edit.app.icon'" filefn="uploadPath" fileprogress="fileProgress" ng-disabled="file_upload_progress_appImg" fileread/>
+                                    </label>
+                                </div>
+								<div class="clearfix"></div>
+							</div>  
+						</div>
+						<div class="pure-u-1">
+							<br/>
+							<button type="submit" ng-disabled="Edit.app.submiting"  class="pure-button pure-button-primary">
+								 {{Edit.app.submiting?'提交中':'提交'}}
+							</button>
+						</div>
+					</div>                     
+				</fieldset>
+			</form>
+        </div>
+ 		<div class="pure-u-1-2" ng-show="Editing.tabIndex == 3">
+            <form class="pure-form add-step-form">
+				<fieldset>
+					<legend>查看应用ＩＤ和应用ＫＥＹ</legend>
+					<div class="pure-g add-step-area">
+						<div class="pure-u-1-1">
+							<label for="appId2">选择应用</label>
+							<select id="appId2" ng-model="Editing.appid" ng-options="m.id as m.name for m in apps" class="pure-input-1" required>
+								<option value="">请选择应用</option>
+							</select>                            
+                            <label for="appId">APP ID</label>
+                            <input id="appId" class="pure-input-1" ng-model="Edit.info.id"  type="text" readonly>   
+                            <label for="appName">APP KEY</label>
+							<input id="appName" class="pure-input-1" ng-model="Edit.info.key"   type="text" readonly>
+                            <div class="pure-u-1">
+                                <br/>
+                                <button class="pure-button pure-button-primary" ui-zeroclip zeroclip-copied="complete($event)" zeroclip-on-error="clipError($event)" zeroclip-model="Edit.app.appid" > 
+                                        <span class="batch">&#xf05D;&nbsp;复制APP ID</span>
+                                </button>
+                                <button class="pure-button pure-button-primary" ui-zeroclip zeroclip-copied="complete($event)" zeroclip-on-error="clipError($event)" zeroclip-model="Edit.app.appkey" > 
+                                        <span class="batch">&#xf05D;&nbsp;复制APP KEY</span>
+                                </button>
+                            </div> 
+						</div> 
+					</div>                     
+				</fieldset>
+            </form>
+        </div>
+ 		<div class="pure-u-1-2" ng-show="Editing.tabIndex == 4"> 
+            <form class="pure-form add-step-form" ng-submit="modifyFlow()">
+				<fieldset>
+					<legend>修改流量配额</legend>
+					<div class="pure-g add-step-area">
+						<div class="pure-u-1-1">
+							<label for="appId2">选择应用</label>
+							<select id="appId2" ng-model="Editing.appid" ng-options="m.id as m.name for m in apps" class="pure-input-1" required>
+								<option value="">请选择应用</option>
+							</select>   
+                            <label for="newUserEnable">新用户赠送流量</label>
+                            <input id="newUserEnable" type="checkbox" ng-model="Edit.flow.newuserenable" class="js-switch" ui-switch/> 
+                            <div ng-show="true === Edit.flow.newuserenable">
+                            
+                            
+							<label for="newUserAmount">新用户赠送流量（MB）</label>
+							<input id="newUserAmount" class="pure-input-1" type="text" placeholder="输入流量值（MB）" ng-model="Edit.flow.newuseramout"　min="0" step="１" pattern='^\d+$'    required> 
+                            <label for="newUserAmount">赠送流量有效期</label>
+							<select id="appId2" ng-model="Edit.flow.newuservalidity" ng-options="v.value as v.description for v in validity" class="pure-input-1" required>
+								<option value="">请选择流量有效期</option>
+							</select>  
+                            </div>
+                            
+                            
+						</div>                        
+                                                
+						<div class="pure-u-1">
+							<br/>
+							<button type="submit" ng-disabled="Edit.flow.submiting"  class="pure-button pure-button-primary">
+								 {{Edit.flow.submiting?'提交中':'提交'}}
+							</button>
+						</div>
+					</div>                     
+				</fieldset>
+			</form>
+        </div>
+	    <div class="pure-u-1-2" ng-show="Editing.tabIndex == 5">
+            <form class="pure-form add-step-form" ng-submit="modifyWhitelist()">
+				<fieldset>
+					<legend>设置应用白名单</legend>
+					<div class="pure-g add-step-area">
+						<div class="pure-u-1-1">
+							<label for="appId3">选择应用</label>
+							<select id="appId3" ng-model="Editing.appid" ng-options="m.id as m.name for m in apps" class="pure-input-1" required>
+								<option value="">请选择应用</option>
+							</select>  
+                            <label for="whitelistEnable">开启白名单</label>
+                            <input id="whitelistEnable" type="checkbox" ng-model="Edit.whitelist.enable" class="js-switch" ui-switch/>   
+                            <div ng-show="true === Edit.whitelist.enable">
+                            <label for="witelist">白名单内容</label>
+                            <textarea id="witelist" class="pure-input-1" placeholder="白名单内容（正则表达式）" ng-model="Edit.whitelist.pattern"></textarea> 
+                            </div>    
+						</div>                        
+                                                
+						<div class="pure-u-1">
+							<br/>
+							<button type="submit" ng-disabled="Edit.whitelist.submiting"  class="pure-button pure-button-primary">
+								 {{Edit.whitelist.submiting?'提交中':'提交'}}
+							</button>
+						</div>
+					</div>                     
+				</fieldset>
+			</form>
+        </div>    
+
+
+
+
+	</div>
+</div>
