@@ -1,4 +1,4 @@
-define([], function () {
+define(['nv'], function (nv) {
 	return ['$scope', '$compile','$filter', '$timeout', '$window','$location','UserService',  'ApiOfServer','Ajax',
 		function ($scope, $compile, $filter ,$timeout, $window, $location,User, Aos,Ajax) {
             var overviews = ["finance","apps","users","messages"];
@@ -14,79 +14,6 @@ define([], function () {
                     "message":null
                 }
             };
-            $scope.chart ={
-                "optionsOfChart1":{
-                    chart: {
-                        type: 'pieChart',
-                        height: 360,
-                        x: function(d){return d.key;},
-                        y: function(d){return d.y;},
-                        showLabels: true,
-                        valueFormat: function(d){
-                            return "<b>"+d3.format('d')(d)+"</b>用户";
-                        },                    
-                        transitionDuration: 500,
-                        labelThreshold: 0.01,
-                        legend: {
-                            margin: {
-                                top: 5,
-                                right: 35,
-                                bottom: 5,
-                                left: 0
-                            }
-                        }
-                    }
-                },
-                "optionsOfChart2":{
-                    chart: {
-                        type: 'historicalBarChart',
-                        height: 365,
-                        margin : {
-                            top: 80,
-                            right: 20,
-                            bottom: 60,
-                            left: 120
-                        },
-                        x: function(d){ return d.key; },
-                        y: function(d){ return d["1"].value; },
-                        showValues: true,
-                        valueFormat: function(d){
-                            return d3.format(',.1f')(d);
-                        },
-                        transitionDuration: 500,
-                        xAxis: {
-                            axisLabel: 'X Axis',
-                            tickFormat: function(d) {
-                                return d3.time.format('%x')(new Date(d))
-                            },
-                            rotateLabels: 45,
-                            showMaxMin: false
-                        },
-                        yAxis: {
-                            axisLabel: '七日内流量趋势',
-                            tickFormat: function(d){
-                                console.log(d);
-                                var array = ['','K','M','G','T','P'];
-                                var i=0;
-                                while (d > 1024)
-                                {
-                                    i++;
-                                    d = d/1024;
-                                }
-
-                                d = d3.format('.02f')(d)+' '+array[i]+'B';
-                                return d;
-                            },
-                            axisLabelDistance: 50
-                        },
-                        forceY:0,
-                        tooltips: false,
-                    }
-                },
-                "dataOfChart1":[],
-                "dataOfChart2":[],    
-            
-            }
             var loadOverview = function(){
                 if(overviews.length >0){
                     var _temp = overviews.pop();
@@ -125,7 +52,25 @@ define([], function () {
                             y: _data.users['app_index_'+_data.apps[i].id] || 0
                         });
                     }
-                    $scope.chart.dataOfChart1 = _temp;
+                    
+                    nv.addGraph(function() {
+                      var chart = nv.models.pieChart()
+                          .x(function(d) { return d.key })
+                          .y(function(d) { return d.y })
+                          .showLabels(true)
+                          .valueFormat(function(d){
+                            return "<b>"+d3.format('d')(d)+"</b>用户";
+                        });
+
+                        d3.select("#chart1 svg")
+                            .datum(_temp)
+                            .transition().duration(350)
+                            .call(chart);
+
+                      return chart;
+                    });
+                    
+                    //$scope.chart.dataOfChart1 = _temp;
                     
                     
                     $scope.overview = _data;
@@ -142,12 +87,47 @@ define([], function () {
                     "appid":0
                 },
                 function(data){
-                    if(!data.timed_out){
-                        $scope.chart.dataOfChart2 = [{
-                            key: "流量趋势",
-                            values: data.aggregations["2"].buckets,
-                            color: '#ff7f0e'
-                        }];
+                    if(!data.timed_out){    
+                        nv.addGraph(function() {
+                            var chart =   nv.models.historicalBarChart()
+                            .margin({top: 80, right: 40, bottom: 60, left: 120})
+                                          .x(function(d) { return d.key; })
+                                          .y(function(d) { return d["1"].value;})
+                                          .color(d3.scale.category10().range())
+                                          .useInteractiveGuideline(true)
+                                          ;
+                            chart.xAxis
+                            .rotateLabels(45)
+                            .tickFormat(function(d) {
+                                return d3.time.format('%x')(new Date(d))
+                            });
+
+                            chart.yAxis
+                                .axisLabel('七日内流量趋势')
+                                .axisLabelDistance(50)
+                                .tickFormat(function(d){
+                                        var array = ['','K','M','G','T','P'];
+                                        var i=0;
+                                        while (d > 1024)
+                                        {
+                                            i++;
+                                            d = d/1024;
+                                        }
+
+                                        d = d3.format('.02f')(d)+' '+array[i]+'B';
+                                        return d;                    
+
+                            });
+                            d3.select('#chart2 svg')
+                                .datum([{
+                                    key: "流量趋势",
+                                    values: data.aggregations["2"].buckets,
+                                    color: '#ff7f0e'
+                                }])
+                                .call(chart);
+                            nv.utils.windowResize(chart.update);
+                            return chart;
+                        });
                     }else{
                         
                     }

@@ -5,7 +5,7 @@ require.config({
 		angular: '/dist/angular/angular_zh-cn.min',
 		d3:'/dist/d3/d3.min',
 		nv:'/dist/nvd3/build/nv.d3.min',
-        nvd3:'/dist/angular-nvd3/dist/angular-nvd3',
+        //nvd3:'/dist/angular-nvd3/dist/angular-nvd3',
         moment:'/dist/moment/min/moment.min',
 		angularAnimate: '/dist/angular-animate/angular-animate.min',
 		angularResource: '/dist/angular-resource/angular-resource.min',
@@ -30,10 +30,11 @@ require.config({
 			deps :['d3'],
 			exports :  'nv'
 		},  
-		'nvd3' : {
+		/*'nvd3' : {
 			deps :['nv'],
 			exports :  'nvd3'
 		},
+        */
 		'moment' : {
 			exports : 'moment'
 		}

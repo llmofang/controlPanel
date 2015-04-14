@@ -7,7 +7,7 @@ define([
         'angularRoute',
         'angularZeroclipboard',
         'angularDatePicker',
-        'nvd3'
+       // 'nvd3'
         ], function (angular, filters, services, directives, controllers) {
                 'use strict';
                 // Declare app level module which depends on filters, and services
@@ -19,7 +19,7 @@ define([
                         'app.directives',
                         'zeroclipboard',
                         'datePicker',
-                        'nvd3'
+                       // 'nvd3'
                 ]).config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
                     // config ZeroClipboard
                     uiZeroclipConfigProvider.setZcConf({

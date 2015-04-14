@@ -19,23 +19,32 @@
     .ov-summary-info p.ov-summary-num{font-size: 25px; font-weight: bold; margin: 10px;}
     .ov-summary-info p.ov-summary-title{font-size: 14px; margin: 20px 10px;}
     .blank{ height: 4px;}
-    .chart1{ width: 100%; height: 180px;} 
+    #chart1{ width: 100%; height: 350px;}
+    #chart1 svg{ width: 100%; height: 350px;}
+    #chart2{ width: 100%; height: 350px;}
+    #chart2 svg{ width: 100%; height: 350px;}    
 </style>
 <link rel="stylesheet" href="/dist/nvd3/build/nv.d3.min.css">
 <div class="main-frame"  ng-controller="OverviewCtrl">
     <div class="pure-g">
         <div class="pure-u-1-2 ov-panel-1-2">
             <div class="ov-panel-main block height-400">
-                <h5>用户</h5>
-                <nvd3 class="chart1" options='chart.optionsOfChart1' data='chart.dataOfChart1'></nvd3>
+                <h5>用户比例</h5>
+                <!--<nvd3 class="chart1" options='chart.optionsOfChart1' data='chart.dataOfChart1'></nvd3>-->
+                <div id="chart1">
+                    <svg></svg>
+                </div>
             </div>
             
     
         </div>
         <div class="pure-u-1-2 ov-panel-2-2">
             <div class="ov-panel-main block height-400">
-                <h5>流量</h5>
-                <nvd3 class="chart2" options='chart.optionsOfChart2' data='chart.dataOfChart2'></nvd3>
+                <h5>流量趋势</h5>
+                <div id="chart2">
+                    <svg></svg>
+                </div>
+                <!--<nvd3 class="chart2" options='chart.optionsOfChart2' data='chart.dataOfChart2'></nvd3>-->
             </div>
         </div>        
     </div>
