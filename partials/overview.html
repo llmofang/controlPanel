@@ -22,7 +22,10 @@
     #chart1{ width: 100%; height: 350px;}
     #chart1 svg{ width: 100%; height: 350px;}
     #chart2{ width: 100%; height: 350px;}
-    #chart2 svg{ width: 100%; height: 350px;}    
+    #chart2 svg{ width: 100%; height: 350px;} 
+    .loading{ width: 100%; height:350px; text-align: center;}
+    .loading p{}
+    .loading p img{width: 80px;margin-top: 100px;}
 </style>
 <link rel="stylesheet" href="/dist/nvd3/build/nv.d3.min.css">
 <div class="main-frame"  ng-controller="OverviewCtrl">
@@ -31,17 +34,27 @@
             <div class="ov-panel-main block height-400">
                 <h5>用户比例</h5>
                 <!--<nvd3 class="chart1" options='chart.optionsOfChart1' data='chart.dataOfChart1'></nvd3>-->
-                <div id="chart1">
+                <div class="loading" ng-show="!showChart1">
+                    <p>
+                        <img src="/images/loader1.gif"/>
+                    </p>
+                    <p>加载中</p>
+                </div>
+                <div id="chart1" ng-show="showChart1">
                     <svg></svg>
                 </div>
             </div>
-            
-    
         </div>
         <div class="pure-u-1-2 ov-panel-2-2">
             <div class="ov-panel-main block height-400">
                 <h5>流量趋势</h5>
-                <div id="chart2">
+                <div class="loading" ng-show="!showChart2">
+                    <p>
+                        <img src="/images/loader1.gif"/>
+                    </p>
+                    <p>加载中</p>
+                </div>              
+                <div id="chart2" ng-show="showChart2">
                     <svg></svg>
                 </div>
                 <!--<nvd3 class="chart2" options='chart.optionsOfChart2' data='chart.dataOfChart2'></nvd3>-->

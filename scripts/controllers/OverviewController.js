@@ -52,21 +52,23 @@ define(['nv'], function (nv) {
                             y: _data.users['app_index_'+_data.apps[i].id] || 0
                         });
                     }
-                    
+                    $scope.showChart1 = true;
                     nv.addGraph(function() {
                       var chart = nv.models.pieChart()
-                          .x(function(d) { return d.key })
-                          .y(function(d) { return d.y })
-                          .showLabels(true)
-                          .valueFormat(function(d){
+                        .x(function(d) { return d.key })
+                        .y(function(d) { return d.y })
+                        .showLabels(true)
+                        .valueFormat(function(d){
                             return "<b>"+d3.format('d')(d)+"</b>用户";
-                        });
-
+                        })
+                        .color(["#77B89C","#9DC1C3","#F05D60","#AC9CB6","#E8B891","#4D98A9","#3D6069"])
+                        .donut(true)
+                        .donutLabelsOutside(true)
+                        .noData("暂无数据") 
                         d3.select("#chart1 svg")
                             .datum(_temp)
-                            .transition().duration(350)
+                            .transition().duration(600)
                             .call(chart);
-
                       return chart;
                     });
                     
@@ -81,48 +83,50 @@ define(['nv'], function (nv) {
             Ajax.POST(
                 Aos+'account/'+User.id+'/logs/apps',
                 {
-                    "start":1425139200000,//new Date().valueOf() - 604800000,
+                    "start":new Date().valueOf() - 86400000*30,
                     "end":new Date().valueOf(),
-                    "interval":"5m",
+                    "interval":"1d",
                     "appid":0
                 },
                 function(data){
-                    if(!data.timed_out){    
+                    if(!data.timed_out){ 
+                        $scope.showChart2 = true;
                         nv.addGraph(function() {
                             var chart =   nv.models.historicalBarChart()
                             .margin({top: 80, right: 40, bottom: 60, left: 120})
-                                          .x(function(d) { return d.key; })
-                                          .y(function(d) { return d["1"].value;})
-                                          .color(d3.scale.category10().range())
-                                          .useInteractiveGuideline(true)
-                                          ;
-                            chart.xAxis
-                            .rotateLabels(45)
-                            .tickFormat(function(d) {
-                                return d3.time.format('%x')(new Date(d))
-                            });
-
-                            chart.yAxis
-                                .axisLabel('七日内流量趋势')
+                            .x(function(d) { return d.key; })
+                            .y(function(d) { return d["1"].value;})
+                            .color(d3.scale.category10().range())
+                            .useInteractiveGuideline(true)
+                            .noData("暂无数据");
+                            chart
+                                .xAxis
+                                .rotateLabels(45)
+                                .tickFormat(function(d) {
+                                    return d3.time.format('%x')(new Date(d))
+                                });
+                            chart
+                                .yAxis
+                                .axisLabel('三十日内流量趋势')
                                 .axisLabelDistance(50)
                                 .tickFormat(function(d){
-                                        var array = ['','K','M','G','T','P'];
-                                        var i=0;
-                                        while (d > 1024)
-                                        {
-                                            i++;
-                                            d = d/1024;
-                                        }
+                                    var array = ['','K','M','G','T','P'];
+                                    var i=0;
+                                    while (d > 1024)
+                                    {
+                                        i++;
+                                        d = d/1024;
+                                    }
 
-                                        d = d3.format('.02f')(d)+' '+array[i]+'B';
-                                        return d;                    
+                                    d = d3.format('.02f')(d)+' '+array[i]+'B';
+                                    return d;                    
 
-                            });
+                                });
                             d3.select('#chart2 svg')
                                 .datum([{
                                     key: "流量趋势",
                                     values: data.aggregations["2"].buckets,
-                                    color: '#ff7f0e'
+                                    color: '#F5696C'
                                 }])
                                 .call(chart);
                             nv.utils.windowResize(chart.update);

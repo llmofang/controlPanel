@@ -1,7 +1,8 @@
-define(['moment'], function (moment) {
+define(['moment','nv'], function (moment,nv) {
 	return ['$scope', '$compile','$filter', '$timeout', '$window','$location','UserService',  'ApiOfServer','Ajax',
 		function ($scope, $compile, $filter ,$timeout, $window,$location, User, Aos,Ajax) {   
-        var chartTitle;    
+        var chartTitle;
+        var chart = null;    
         var optionsFilter=[
             {id:"id",option:'用户ID',placeholder:'填写用户ID',pattern:'^\d+$'},
             {id:"phone",option:'用户手机号',placeholder:'填写用户手机号',pattern:'.*'},
@@ -35,106 +36,67 @@ define(['moment'], function (moment) {
                 return "1w"; 
             }
         }; 
-        $scope.apps = [];      
-        var getAppNameById = function(id){
-            console.log($scope.apps);
-            for(var i in  $scope.apps){
-                if($scope.apps[i].id == id){
-                    return $scope.apps[i].app_name;
-                }
-            }
-        };    
-        $scope.calenda = true;        
-        $scope.optionsFilter= optionsFilter;  
-        $scope.chartOptions = {
-            chart: {
-                type: 'lineWithFocusChart',
-                height: 450,
-                margin : {
-                    top: 80,
-                    right: 50,
-                    bottom: 40,
-                    left: 150
-                },
-                x: function(d){ return d.key; },
-                y: function(d){ return d["1"].value; },
-                noData:"暂无数据.",
-                useInteractiveGuideline: true,
-                "color": [
-                  "#2ca02c",
-                  "darkred"
-                ],
-                dispatch: {
-                    stateChange: function(e){ console.log("stateChange"); },
-                    changeState: function(e){ console.log("changeState"); },
-                    tooltipShow: function(e){ console.log("tooltipShow"); },
-                    tooltipHide: function(e){ console.log("tooltipHide"); }
-                },
-                xAxis: {
-                    axisLabel: '时间',
-                    tickFormat: function(d) {
-                        return d3.time.format('%Y/%m/%d')(new Date(d))
-                    }, 
-                },
-                "x2Axis": {                    
-                    tickFormat: function(d) {
-                        return d3.time.format('%Y/%m/%d')(new Date(d));
-                    },
-                    //rotateLabels: 45,                    
-                },
-                yAxis: {
-                    axisLabel: '流量',
-                    tickFormat: function(d){
-                        console.log(d);
-                        var array = ['','K','M','G','T','P'];
-                        var i=0;
-                        while (d > 1024)
-                        {
-                            i++;
-                            d = d/1024;
-                        }
+        var updateChart = function(data){
+            $scope.showChart = true;
+            nv.addGraph(function() {
+                if("function" !== typeof(chart)){
+                    chart =   nv.models.lineChart()
+                    .margin({top: 80, right: -10, bottom: 100, left: 120})
+                    .x(function(d) { return d.key; })
+                    .y(function(d) { return d["1"].value;})
+                    .color(d3.scale.category10().range())
+                    .useInteractiveGuideline(true)
+                    .noData("暂无数据")
+                    .useVoronoi(false);
+                    chart
+                        .xAxis
+                        .rotateLabels(45)
+                        .tickFormat(function(d) {
+                            return d3.time.format('%Y/%m/%d %H:%M')(new Date(d))
+                        });
+                    chart
+                        .forceY(0)
+                        .yAxis
+                        .axisLabel('流量')
+                        .axisLabelDistance(50)
+                        .tickFormat(function(d){
+                            var array = ['','K','M','G','T','P'];
+                            var i=0;
+                            while (d > 1024)
+                            {
+                                i++;
+                                d = d/1024;
+                            }
 
-                        d = d3.format('.02f')(d)+' '+array[i]+'B';
-                        return d;
-                    },
-                    axisLabelDistance: 50
-                },
-                forceY:0,
-                tooltips: true,
-                tooltipContent:function (key, x, y, e, graph) {
-                    "use strict";
-                    console.log(e.point.key);
-                    return '<h3>' + key + '</h3>' +
-                    '<p>流量:<b>' +  y + '</b>' + 
-                    ' 时间:'+d3.time.format('%Y/%m/%d %H:%M')(new Date(e.point.key)) + '</p>'
-                },                  
-                callback: function(chart){
-                    //console.log("!!! lineChart callback !!!");
-                }
-            },
-            title: {
-                enable: false,
-                text: ''
-            },
-            subtitle: {
-                enable: false,
-                text: '',
-                css: {
-                    'text-align': 'center',
-                    'margin': '10px 13px 0px 7px'
-                }
-            },          
-            caption: {
-                enable: true,
-                html: '<b>注意:</b>图中的流量值相对用户真实使用的流量值<span style="color: darkred;">偏小</span>.具体计费流量以最终账单为准.',
-                css: {
-                    'text-align': 'justify',
-                    'margin': '10px 13px 0px 7px'
-                }
-            }
-        }    
-        $scope.chartData = [];  
-        $scope.getChart = function(i){
+                            d = d3.format('.02f')(d)+' '+array[i]+'B';
+                            return d;                    
+
+                        });
+                
+                } 
+                var ev = ["mousemove","mouseout","click","dblclick"];
+                var svg = d3.select('#chart svg');
+                svg.selectAll("*").remove();
+                svg
+                .each(function(){
+                    var that = this;
+                    for(var i in ev){
+                        console.log(ev[i]);
+                        d3.select('svg').on(ev[i], null);
+                        d3.select(that).on(ev[i],function() {
+                            d3.event.stopPropagation(); 
+                        });
+                    }
+                });
+                svg
+                    .datum(data)
+                    .call(chart);
+                nv.utils.windowResize(chart.update);
+                return chart;
+            });
+        }; 
+        var getChart = function(i){
+            $scope.querySubmiting = true;
             if("undefined" === typeof($scope.start) || "undefined" === typeof($scope.end) ){
                 $scope.notify_send('','请选择报表时间范围！');
                 return false;
@@ -164,28 +126,51 @@ define(['moment'], function (moment) {
                 
                 break;        
             }
+            $scope.showChart = false;
             Ajax.POST(
                 _url,
                 _data,
                 function(data){
                     if(!data.timed_out){
-                        $scope.chartData = [{
+                        $scope.querySubmiting = false;   
+                        updateChart([{
                             key: _key,
                             values: data.aggregations["2"].buckets,
                             color: '#ff7f0e'
-                        }];
+                        }]);
                     }else{
-                        
+                            $scope.notify_send("","查询超时,请稍后刷新页面重试！");
+                            $scope.querySubmiting = false; 
                     }
                 },
                 function(data, status, headers, config){
-                        console.log(status);
+                    $scope.querySubmiting = false;   
+                    if(404 === status){
+                            updateChart([{
+                            key: _key,
+                            values: [],
+                            color: '#ff7f0e'
+                        }]);                  
+                    }
                 }	
             );
             
-        }     
-        
-        
+        };    
+        $scope.apps = [];      
+        var getAppNameById = function(id){
+            console.log($scope.apps);
+            for(var i in  $scope.apps){
+                if($scope.apps[i].id == id){
+                    return $scope.apps[i].app_name;
+                }
+            }
+        };    
+        $scope.calenda = false;        
+        $scope.optionsFilter= optionsFilter; 
+        $scope.start = moment().subtract(6, 'days').toDate();
+        $scope.end =  moment().toDate();   
+        $scope.getChart =  getChart;////////// 
+        getChart(2);
         Ajax
             .GET(
             Aos+'account/'+User.id+'/overview/apps',
@@ -200,10 +185,7 @@ define(['moment'], function (moment) {
 
 
             }
-        );        
-        
-        
-        
+        ); 
         $scope.$watch(
 				"optid",
 				function( newValue, oldValue ) {
